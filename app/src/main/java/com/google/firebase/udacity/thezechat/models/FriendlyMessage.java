@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.firebase.udacity.thezechat;
+package com.google.firebase.udacity.thezechat.models;
 
 public class FriendlyMessage {
 

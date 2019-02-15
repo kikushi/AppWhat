@@ -1,4 +1,4 @@
-package com.google.firebase.udacity.thezechat;
+package com.google.firebase.udacity.thezechat.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.udacity.thezechat.R;
+import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 
 import java.util.List;
 

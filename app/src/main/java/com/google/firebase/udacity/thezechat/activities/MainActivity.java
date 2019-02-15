@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.firebase.udacity.thezechat;
+package com.google.firebase.udacity.thezechat.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,10 +39,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -53,8 +49,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.firebase.udacity.thezechat.R;
+import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
+import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 
 //import static com.firebase.ui.auth.ui.AcquireEmailHelper.RC_SIGN_IN;_
 
@@ -62,8 +59,6 @@ import com.google.firebase.udacity.thezechat.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 public class MainActivity extends AppCompatActivity {
 
