@@ -52,6 +52,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
+import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
 //import static com.firebase.ui.auth.ui.AcquireEmailHelper.RC_SIGN_IN;_
 
@@ -250,6 +251,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.user_profile:
+                IntentHandler.getInstance().openActivity(this, UserProfile.class, null);
+                return true;
             case R.id.sign_out_menu:
                 //sign out
                 AuthUI.getInstance().signOut(this);
