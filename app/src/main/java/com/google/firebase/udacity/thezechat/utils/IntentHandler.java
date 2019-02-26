@@ -9,9 +9,9 @@ import android.util.Log;
 public class IntentHandler {
 
     private static final String TAG = IntentHandler.class.getSimpleName();
-    private static final int REQUEST_CODE_CAMERA = 1;
-    private static final int REQUEST_CODE_GALLERY = 2;
-    private static final int REQUEST_CODE_INTERNAL_STORAGE = 3;
+    public static final int REQUEST_CODE_CAMERA = 1;
+    public static final int REQUEST_CODE_GALLERY = 2;
+    public static final int REQUEST_CODE_INTERNAL_STORAGE = 3;
     private static final String TYPE_IMAGE = "image";
     private static final String TYPE_AUDIO = "audio";
 

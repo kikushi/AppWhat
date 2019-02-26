@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dialog_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/image_user_default" />
+
+    <Button
+        android:id="@+id/open_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_camera"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:text="Open Camera"
+        android:textColor="@color/colorBlack"/>
+
+    <Button
+        android:id="@+id/open_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_gallery"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:text="Open Gallery"
+        android:textColor="@color/colorBlack"/>
+
+    <Button
+        android:id="@+id/open_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_storage"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:text="Open Storage"
+        android:textColor="@color/colorBlack"/>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_delete"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:text="Delete Image"
+        android:textColor="@color/colorBlack"/>
+
+
+</LinearLayout>
