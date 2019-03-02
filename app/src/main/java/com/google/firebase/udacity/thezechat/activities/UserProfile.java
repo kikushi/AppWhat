@@ -1,9 +1,6 @@
 package com.google.firebase.udacity.thezechat.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +12,13 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.udacity.thezechat.CustomImageView;
+import com.google.firebase.udacity.thezechat.utils.CustomImageView;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.models.User;
 import com.google.firebase.udacity.thezechat.utils.IntentHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -38,6 +38,7 @@ public class UserProfile extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = auth.getCurrentUser();
 
+
         mProfileImageView = findViewById(R.id.activity_user_profile_image);
         mUserName = findViewById(R.id.user_profile_name);
         mUserBiography = findViewById(R.id.user_profile_biography);
@@ -51,10 +52,22 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        List<Integer> drawables = new ArrayList<>();
+        drawables.add(R.drawable.ic_camera);
+        drawables.add(R.drawable.ic_gallery);
+        drawables.add(R.drawable.ic_storage);
+        drawables.add(R.drawable.ic_delete);
+
+        //mProfileImageView.setHorizontalIconDialog(drawables);
+
         if(fbUser != null) {
+            User.Metadata metadata = new User.Metadata();
+            metadata.setCreationTimestamp(fbUser.getMetadata().getCreationTimestamp());
+            metadata.setLastSigninTimestamp(fbUser.getMetadata().getLastSignInTimestamp());
             mUserName.setText(fbUser.getDisplayName());
             mUserEmail.setText(fbUser.getEmail());
             mUserBiography.setText(fbUser.getUid());
+
 
             User user = new User();
             user.setUid(fbUser.getUid());
@@ -62,8 +75,7 @@ public class UserProfile extends AppCompatActivity {
             user.setBiography("");
             user.setEmail(fbUser.getEmail());
             user.setVerify(fbUser.isEmailVerified());
-            user.setCreationTimestamp(fbUser.getMetadata().getCreationTimestamp());
-            user.setLastSigninTimestamp(fbUser.getMetadata().getLastSignInTimestamp());
+            user.setMetadata(metadata);
 
             FirebaseDatabase.getInstance().getReference()
                     .child("users")

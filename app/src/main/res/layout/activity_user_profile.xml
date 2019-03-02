@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.google.firebase.udacity.thezechat.CustomImageView
+        <com.google.firebase.udacity.thezechat.utils.CustomImageView
             android:id="@+id/activity.user.profile_image"
             android:layout_width="48dp"
             android:layout_height="48dp"

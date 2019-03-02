@@ -9,6 +9,58 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
+    public static class Metadata implements Parcelable {
+
+        private long creationTimestamp;
+        private long lastSigninTimestamp;
+
+        public Metadata() {}
+
+        protected Metadata(Parcel in) {
+            creationTimestamp = in.readLong();
+            lastSigninTimestamp = in.readLong();
+        }
+
+        public static final Creator<Metadata> CREATOR = new Creator<Metadata>() {
+            @Override
+            public Metadata createFromParcel(Parcel in) {
+                return new Metadata(in);
+            }
+
+            @Override
+            public Metadata[] newArray(int size) {
+                return new Metadata[size];
+            }
+        };
+
+        public long getCreationTimestamp() {
+            return creationTimestamp;
+        }
+
+        public void setCreationTimestamp(long creationTimestamp) {
+            this.creationTimestamp = creationTimestamp;
+        }
+
+        public long getLastSigninTimestamp() {
+            return lastSigninTimestamp;
+        }
+
+        public void setLastSigninTimestamp(long lastSigninTimestamp) {
+            this.lastSigninTimestamp = lastSigninTimestamp;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeLong(creationTimestamp);
+            parcel.writeLong(lastSigninTimestamp);
+        }
+    }
+
     private String uid;
     private String name;
     private String username;
@@ -16,8 +68,8 @@ public class User implements Parcelable {
     private String email;
     private String phone;
     private boolean isVerify;
-    private long creationTimestamp;
-    private long lastSigninTimestamp;
+    private Metadata metadata;
+
 
     public User() {
         //Empty constructor
@@ -32,8 +84,7 @@ public class User implements Parcelable {
         email = in.readString();
         phone = in.readString();
         isVerify = in.readByte() != 0;
-        creationTimestamp = in.readLong();
-        lastSigninTimestamp = in.readLong();
+        //metadata = in.readValue();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -110,20 +161,12 @@ public class User implements Parcelable {
         isVerify = verify;
     }
 
-    public long getCreationTimestamp() {
-        return creationTimestamp;
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    public void setCreationTimestamp(long creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
-    }
-
-    public long getLastSigninTimestamp() {
-        return lastSigninTimestamp;
-    }
-
-    public void setLastSigninTimestamp(long lastSigninTimestamp) {
-        this.lastSigninTimestamp = lastSigninTimestamp;
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 
     @Override
@@ -140,7 +183,6 @@ public class User implements Parcelable {
         parcel.writeString(email);
         parcel.writeString(phone);
         parcel.writeByte((byte) (isVerify ? 1 : 0));
-        parcel.writeLong(creationTimestamp);
-        parcel.writeLong(lastSigninTimestamp);
+        //parcel.writeValue(metadata);
     }
 }
