@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.utils.CustomImageView;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.models.User;
@@ -52,11 +54,6 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-        List<Integer> drawables = new ArrayList<>();
-        drawables.add(R.drawable.ic_camera);
-        drawables.add(R.drawable.ic_gallery);
-        drawables.add(R.drawable.ic_storage);
-        drawables.add(R.drawable.ic_delete);
 
         //mProfileImageView.setHorizontalIconDialog(drawables);
 
@@ -77,10 +74,12 @@ public class UserProfile extends AppCompatActivity {
             user.setVerify(fbUser.isEmailVerified());
             user.setMetadata(metadata);
 
-            FirebaseDatabase.getInstance().getReference()
-                    .child("users")
-                    .child(user.getUid())
-                    .setValue(user);
+            Database.getInstance().updateUserDatabase(user);
+
+            Database.getInstance().updateUserSubscriptions(user.getUid(), "1");
+            Database.getInstance().updateUserSubscriptions(user.getUid(), "2");
+            Database.getInstance().updateUserSubscriptions(user.getUid(), "3");
+
         }
 
 

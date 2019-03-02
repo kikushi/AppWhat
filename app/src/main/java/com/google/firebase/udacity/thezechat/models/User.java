@@ -3,6 +3,11 @@ package com.google.firebase.udacity.thezechat.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by jul_samson on 19-02-07.
  */
@@ -69,10 +74,13 @@ public class User implements Parcelable {
     private String phone;
     private boolean isVerify;
     private Metadata metadata;
+    private List<String> images;
 
 
     public User() {
         //Empty constructor
+        metadata = new Metadata();
+        images = new ArrayList<>();
     }
 
 
@@ -161,12 +169,20 @@ public class User implements Parcelable {
         isVerify = verify;
     }
 
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
     public Metadata getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Metadata metadata) {
-        this.metadata = metadata;
+    public void setMetadata(Metadata metadatas) {
+        this.metadata = metadatas;
     }
 
     @Override
@@ -184,5 +200,20 @@ public class User implements Parcelable {
         parcel.writeString(phone);
         parcel.writeByte((byte) (isVerify ? 1 : 0));
         //parcel.writeValue(metadata);
+    }
+
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uid", uid);
+        result.put("name", name);
+        result.put("username", username);
+        result.put("biography", biography);
+        result.put("email", email);
+        result.put("phone", phone);
+        result.put("isVerify", isVerify);
+        result.put("metadata", metadata);
+        result.put("images", images);
+        return result;
     }
 }
