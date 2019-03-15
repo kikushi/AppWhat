@@ -3,4 +3,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="send_button_label">Send</string>
     <string name="user_profile">User Profile</string>
+    <string name="default_name">default_name</string>
+    <string name="last_conversation_summary">last_conv_txt</string>
+    <string name="last_contact_time">00/00/0000</string>
 </resources>

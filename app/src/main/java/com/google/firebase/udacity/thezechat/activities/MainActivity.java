@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 if(user != null){
                     //Toast.makeText(MainActivity.this, "You're now signed in. Welcome to FriendlyChat.", Toast.LENGTH_SHORT).show();
                     onSignedInInitialize(user.getDisplayName());
+                    IntentHandler.getInstance().openActivity(MainActivity.this, MessagesActivity.class, null);
                 } else{
                     onSignedOutCleanup();
 
