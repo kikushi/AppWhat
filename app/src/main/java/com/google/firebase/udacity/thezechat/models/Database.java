@@ -33,7 +33,8 @@ public class Database  {
 
     private static String TAG = Database.class.getSimpleName();
 
-    private static final String USERS = "users";
+    public static final String USERS = "users";
+    public static final String MESSAGES = "messages";
     private static final String CONVERSATIONS = "conversations";
 
     private static final String SUBSCRIPTIONS = "subscriptions";
@@ -97,6 +98,13 @@ public class Database  {
                 child(uid);
     }
 
+    public DatabaseReference getUserConversation(String uid, String cid) {
+        return rootDatabase.
+                child(USERS + "-" +CONVERSATIONS).
+                child(uid).
+                child(cid);
+    }
+
     public DatabaseReference getConversations(){
         Log.d(TAG, "getUserSubscriptions");
         return rootDatabase
@@ -157,9 +165,12 @@ public class Database  {
         getUserSubscriptions(sid).child(SUBSCRIBERS).child(uid).setValue(true);
     }
 
-    public  void updateConversation(String conversationId, List<User> users, FriendlyMessage message) {
+    public  void updateConversation(List<User> users, FriendlyMessage message) {
+        String id = rootDatabase.push().getKey();
         for (User user : users) {
-            getUserConversations(user.getUid()).child(conversationId).child("messages").push().setValue(message);
+            getUserConversations(user.getUid()).child(id).child("cid").setValue(id);
+            getUserConversations(user.getUid()).child(id).child("users").setValue(users);
+            getUserConversations(user.getUid()).child(id).child("messages").push().setValue(message);
         }
     }
 

@@ -15,7 +15,10 @@
  */
 package com.google.firebase.udacity.thezechat.models;
 
-public class FriendlyMessage {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FriendlyMessage implements Parcelable {
 
     private String text;
     private String name;
@@ -53,5 +56,36 @@ public class FriendlyMessage {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+
+    protected FriendlyMessage(Parcel in) {
+        text = in.readString();
+        name = in.readString();
+        photoUrl = in.readString();
+    }
+
+    public static final Creator<FriendlyMessage> CREATOR = new Creator<FriendlyMessage>() {
+        @Override
+        public FriendlyMessage createFromParcel(Parcel in) {
+            return new FriendlyMessage(in);
+        }
+
+        @Override
+        public FriendlyMessage[] newArray(int size) {
+            return new FriendlyMessage[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(text);
+        parcel.writeString(name);
+        parcel.writeString(photoUrl);
     }
 }

@@ -2,6 +2,7 @@ package com.google.firebase.udacity.thezechat.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,9 +13,13 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
+
+    private List<FriendlyMessage> messages = new ArrayList<>();
+
     public MessageAdapter(Context context, int resource, List<FriendlyMessage> objects) {
         super(context, resource, objects);
     }
@@ -47,4 +52,7 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
 
         return convertView;
     }
+
+
+
 }
