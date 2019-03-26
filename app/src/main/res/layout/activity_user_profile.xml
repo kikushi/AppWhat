@@ -1,94 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.UserProfile">
+    tools:context=".activities.UserProfileActivity">
 
     <!--BASIC USER INFORMATION-->
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <com.google.firebase.udacity.thezechat.utils.CustomImageView
-            android:id="@+id/activity.user.profile_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/image_user_default"/>
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/user_profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NAME"
-                android:textSize="24sp"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/user_profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/user_profile_biography"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Biographie"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlack"/>
+                <!--IMAGE, NAME, ONLINE STATUS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <com.google.firebase.udacity.thezechat.utils.CustomImageView
+                        android:id="@+id/activity.user.profile_image"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/image_user_default"/>
 
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
-    <!--USER INFO-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/user_profile_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nom"
+                            android:textSize="24sp"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Account connected"/>
+                        <TextView
+                            android:id="@+id/user_profile_online"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="En ligne"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorBlack"/>
 
-        <Button
-            android:id="@+id/user_profile_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                    </LinearLayout>
 
-    </LinearLayout>
+                </LinearLayout>
 
-    <!--CONVERSATION PARAMETER & SHARED IMAGE-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                <!--OTHERS DETAILS-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Parameters"/>
+                    <Button
+                        android:id="@+id/user_profile_biography"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:drawableStart="@drawable/ic_person"
+                        android:text="biography"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
-        <Button
-            android:id="@+id/user_profile_edit_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit account"/>
+                    <Button
+                        android:id="@+id/user_profile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:drawableStart="@drawable/ic_email"
+                        android:text="email"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
-    </LinearLayout>
+                    <Button
+                        android:id="@+id/user_profile_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:drawableStart="@drawable/ic_phone"
+                        android:text="phone"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
-</LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_profile_layout_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--IMAGE, NAME, ONLINE STATUS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.firebase.udacity.thezechat.utils.CustomImageView
+                        android:id="@+id/activity.user.profile_image_edit"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/image_user_default"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/user_profile_name_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:hint="name"
+                            android:inputType="textShortMessage"
+                            android:textSize="24sp"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--OTHERS DETAILS-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/user_profile_biography_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_person"
+                        android:hint="biography"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:layout_margin="16dp" />
+
+                    <EditText
+                        android:id="@+id/user_profile_email_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="email"
+                        android:drawableStart="@drawable/ic_email"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:layout_margin="16dp"
+                        android:inputType="textEmailAddress" />
+
+                    <EditText
+                        android:id="@+id/user_profile_phone_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="phone"
+                        android:drawableStart="@drawable/ic_phone"
+                        android:inputType="phone"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:layout_margin="16dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

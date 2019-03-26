@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +25,7 @@ import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 import com.google.firebase.udacity.thezechat.models.User;
 import com.google.firebase.udacity.thezechat.R;
+import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +71,30 @@ public class ConversationsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.user_profile:
+
+                IntentHandler.getInstance().openActivity(this, UserProfileActivity.class, null);
+                return true;
+            case R.id.sign_out_menu:
+                //sign out
+                AuthUI.getInstance().signOut(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         attachDatabaseListener();
@@ -98,7 +127,6 @@ public class ConversationsActivity extends AppCompatActivity {
 
     private void attachDatabaseListener(){
         if(mValueEventListener == null){
-
 
             mValueEventListener = new ValueEventListener() {
                 @Override

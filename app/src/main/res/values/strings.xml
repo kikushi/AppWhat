@@ -6,4 +6,6 @@
     <string name="default_name">default_name</string>
     <string name="last_conversation_summary">last_conv_txt</string>
     <string name="last_contact_time">00/00/0000</string>
+    <string name="user_menu_edit">Modifier profile</string>
+    <string name="user_menu_done">Sauvegarder</string>
 </resources>

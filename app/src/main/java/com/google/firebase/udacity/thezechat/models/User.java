@@ -74,13 +74,13 @@ public class User implements Parcelable {
     private String phone;
     private boolean isVerify;
     private Metadata metadata;
-    private List<String> images;
+    private Map<String,Boolean> images;
 
 
     public User() {
         //Empty constructor
         metadata = new Metadata();
-        images = new ArrayList<>();
+        images = new HashMap<>();
     }
 
 
@@ -169,11 +169,22 @@ public class User implements Parcelable {
         isVerify = verify;
     }
 
-    public List<String> getImages() {
+    public String getCurrentImageProfile() {
+        String currentImageProfile = "";
+        for (Map.Entry<String,Boolean> entry : images.entrySet()) {
+            if (entry.getValue() == true)
+                currentImageProfile = entry.getKey();
+            else
+                currentImageProfile = null;
+        }
+        return currentImageProfile;
+    }
+
+    public Map<String,Boolean> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(Map<String,Boolean> images) {
         this.images = images;
     }
 
@@ -202,6 +213,12 @@ public class User implements Parcelable {
         //parcel.writeValue(metadata);
     }
 
+
+    /**
+     *
+     *
+     * @return return a Map with a pair <Key, Object>
+     */
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

@@ -13,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.udacity.thezechat.activities.MessagesActivity;
+import com.google.firebase.udacity.thezechat.activities.UserProfileActivity;
 import com.google.firebase.udacity.thezechat.models.Conversation;
 import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
@@ -27,11 +30,13 @@ import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
 
     private static final String TAG = ConversationAdapter.class.getSimpleName();
     public static final String KEY = "conversation";
+    public static final String USER = "user";
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -98,10 +103,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if (conversation.getUsers() == null)
             throw new NullPointerException("No users in conversation " + holder.getAdapterPosition());
 
+
         StringBuilder names = new StringBuilder();
         List<User> users = conversation.getUsers();
 
         for (int i = 0 ; i < users.size(); i++) {
+
+            User user = users.get(i);
+
+            if (user.getImages() != null && !user.getImages().isEmpty()) {
+                Map.Entry<String, Boolean> entry = user.getImages().entrySet().iterator().next();
+                StorageReference currentImageRef = Database.getInstance().getUserImages(user.getUid()).child(entry.getKey());
+                Glide.with(activity).load(currentImageRef).into(holder.profileImage);
+            }
 
             names.append(users.get(i).getName());
 
@@ -109,6 +123,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 names.append(", ");
         }
         holder.profileNom.setText(names.toString());
+
 
 
         if (conversation.getMessages() == null)
@@ -135,6 +150,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
         });
 
+        holder.profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isGroupConversation = conversation.getUsers().size() > 2;
+                if (!isGroupConversation) {
+                    Bundle out = new Bundle();
+                    out.putParcelable(USER, conversation.getUsers().get(0));
+                    IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, out);
+                }
+            }
+        });
         //if (conversation.getUsers().size() <= 2)
         //    holder.profileImage.setUsersDialog(activity, conversation.getUsers().get(0).getName());
 

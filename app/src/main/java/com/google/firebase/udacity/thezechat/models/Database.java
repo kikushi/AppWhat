@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -118,7 +120,8 @@ public class Database  {
 
      */
 
-    public void createUserDatabase() {
+    public void initUserDatabase() {
+
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         try {
@@ -199,10 +202,6 @@ public class Database  {
 
     public void updateUserImageStorage(final User user, Bitmap bitmap) {
 
-        //List<String> userImages = user.getImages();
-        //userImages.add(rootDatabase.push().getKey());
-        //int lastImage = userImages.size() - 1;
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
         final byte[] data = baos.toByteArray();
@@ -219,12 +218,16 @@ public class Database  {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                        Log.d(TAG, "image uploaded");
                         //Set images to false (because not use)
+                        getUserDatabase(user.getUid())
+                                .child(IMAGES)
+                                .child(imageId)
+                                .setValue(true);
                         getUserDatabase(user.getUid()).child(IMAGES).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Log.d(TAG, dataSnapshot.toString());
+                                /*Log.d(TAG, dataSnapshot.toString());
                                 Map<String,Boolean> images = (Map<String, Boolean>) dataSnapshot.getValue();
                                 for (Map.Entry<String,Boolean> entry : images.entrySet()) {
                                     entry.setValue(false);
@@ -232,7 +235,7 @@ public class Database  {
                                 getUserDatabase(user.getUid())
                                         .child(IMAGES)
                                         .child(imageId)
-                                        .setValue(true);
+                                        .setValue(true);*/
                             }
 
                             @Override
@@ -240,10 +243,12 @@ public class Database  {
 
                             }
                         });
-
-
-
-                        //updateUserDatabase(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, e.getMessage());
                     }
                 });
 
