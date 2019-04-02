@@ -73,6 +73,12 @@ public class Database  {
         return rootDatabase;
     }
 
+    public DatabaseReference getUsers() {
+        Log.d(TAG, "getUserDatabase");
+        return rootDatabase
+                .child(USERS);
+    }
+
     public DatabaseReference getUserDatabase(String uid) {
         Log.d(TAG, "getUserDatabase");
         return rootDatabase
@@ -168,12 +174,18 @@ public class Database  {
         getUserSubscriptions(sid).child(SUBSCRIBERS).child(uid).setValue(true);
     }
 
-    public  void updateConversation(List<User> users, FriendlyMessage message) {
+    public void createConversation(List<User> users)
+    {
         String id = rootDatabase.push().getKey();
         for (User user : users) {
             getUserConversations(user.getUid()).child(id).child("cid").setValue(id);
             getUserConversations(user.getUid()).child(id).child("users").setValue(users);
-            getUserConversations(user.getUid()).child(id).child("messages").push().setValue(message);
+        }
+    }
+
+    public  void updateConversation(String idConversation, List<User> users, FriendlyMessage message) {
+        for (User user : users) {
+            getUserConversations(user.getUid()).child(idConversation).child("messages").push().setValue(message);
         }
     }
 

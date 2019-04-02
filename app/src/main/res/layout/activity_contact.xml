@@ -6,23 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ConversationsActivity"
+    tools:context=".activities.ContactsActivity"
     >
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/contact_recyclerview"
+        android:id="@+id/contactList_recyclerview"
         />
-
-    <android.support.design.widget.FloatingActionButton
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    android:src="@drawable/ic_person"
-    android:id="@+id/went_To"
-    android:onClick="wentTo"
-      />
 
 </android.support.design.widget.CoordinatorLayout>

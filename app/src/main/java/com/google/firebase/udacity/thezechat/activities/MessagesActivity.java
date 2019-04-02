@@ -88,7 +88,7 @@ public class MessagesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (mFirebaseAuth != null) {
+        if (mFirebaseAuth != null && mConversation != null) {
             mFirebaseUser = mFirebaseAuth.getCurrentUser();
             dbUserConversation = Database.getInstance().getUserConversation(mFirebaseAuth.getUid(), mConversation.getCid());
         }
@@ -118,7 +118,7 @@ public class MessagesActivity extends AppCompatActivity {
                         mFirebaseAuth.getCurrentUser().getDisplayName(),
                         null
                 );
-                dbUserConversation.child(Database.MESSAGES).push().setValue(friendlyMessage);
+                Database.getInstance().updateConversation(mConversation.getCid(), mConversation.getUsers(), friendlyMessage);
 
                 // Clear input box
                 mMessageEditText.setText("");
