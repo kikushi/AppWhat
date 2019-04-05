@@ -51,6 +51,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
+import com.google.firebase.udacity.thezechat.models.Conversation;
+import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
@@ -253,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.user_profile:
-                IntentHandler.getInstance().openActivity(this, UserProfile.class, null);
                 return true;
             case R.id.sign_out_menu:
                 //sign out

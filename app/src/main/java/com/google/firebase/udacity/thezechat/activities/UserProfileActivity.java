@@ -37,6 +37,7 @@ import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -206,8 +207,6 @@ public class UserProfileActivity extends AppCompatActivity {
                     }
                     Glide.with(this).load(bitmap).into(mProfileImageView);
                     Glide.with(this).load(bitmap).into(mEditProfileImageView);
-                    //customImageView.load(data.getData()).setTimeShared("14:00").isEditable(true).setImageSize();
-                    //Glide.with(thisActivity).load(data.getData()).into(mTestImage);
                     break;
                 case IntentHandler.REQUEST_CODE_CAMERA:
                     //nothing
