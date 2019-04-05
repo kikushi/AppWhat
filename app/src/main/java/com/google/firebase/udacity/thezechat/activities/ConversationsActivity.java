@@ -10,6 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +55,7 @@ public class ConversationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_conversations);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -69,7 +76,13 @@ public class ConversationsActivity extends AppCompatActivity {
             dbUserConversation = Database.getInstance().getUserConversations(mFirebaseAuth.getUid());
         }
     }
+public void wentTo(View v)
+{
 
+    Intent intent = new Intent(this,ContactsActivity.class );
+    startActivity(intent);
+
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -120,7 +133,8 @@ public class ConversationsActivity extends AppCompatActivity {
         message.setText("ALLO");
 
         if(mConversations.isEmpty()){
-            Database.getInstance().updateConversation(users, message);
+            for(Conversation conversation : mConversations)
+                Database.getInstance().updateConversation(conversation.getCid(), users, message);
         }
 
     }
