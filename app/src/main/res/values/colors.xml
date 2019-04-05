@@ -7,4 +7,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGrey">#888888</color>
+    <color name="colorAppWhatGreen">#CCFFBB</color>
+    <color name="colorAppWhatGrey">#EEEEEE</color>
 </resources>

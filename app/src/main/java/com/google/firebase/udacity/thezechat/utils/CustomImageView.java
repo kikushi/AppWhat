@@ -50,10 +50,6 @@ public class CustomImageView extends CircleImageView {
 
     public void setUsersDialog(final Activity activity, String name) {
 
-        Bitmap image = ((BitmapDrawable) getDrawable()).getBitmap();
-        scaleBitmap(image, this.getWidth(), this.getHeight());
-
-
 
         final Dialog dialog = new Dialog(activity);
         dialog.setContentView(R.layout.dialog_users_card);
@@ -62,8 +58,8 @@ public class CustomImageView extends CircleImageView {
         if (name != null)
             userName.setText(name);
 
-        ImageView userImage = dialog.findViewById(R.id.dialog_users_card_user_image);
-        userImage.setImageBitmap(image);
+        //ImageView userImage = dialog.findViewById(R.id.dialog_users_card_user_image);
+        //userImage.setImageBitmap(image);
 
         ImageButton follow = dialog.findViewById(R.id.dialog_users_card_follow_user);
         follow.setOnClickListener(new OnClickListener() {

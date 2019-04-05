@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/message_layout_received"
+        android:id="@+id/message_layout">
+
+        <ImageView
+            style="@style/match_parent"
+            android:id="@+id/message_img"/>
+
+        <TextView
+            style="@style/message_contenu"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/message_text"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="  "/>
+
+        <TextView
+            style="@style/message_temps"
+            android:id="@+id/message_time"
+            />
+
+        <ImageView
+            style="@style/match_parent"
+            android:id="@+id/message_noticed"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/match_parent"
+        android:id="@+id/message_author_name"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+</LinearLayout>

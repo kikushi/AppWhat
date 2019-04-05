@@ -52,6 +52,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
+import com.google.firebase.udacity.thezechat.models.AppDate;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize message ListView and its adapter
         final List<FriendlyMessage> friendlyMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
+        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages, mFirebaseUser);
         mMessageListView.setAdapter(mMessageAdapter);
 
         // Initialize progress bar
@@ -166,7 +167,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: Send messages on click
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(),mUsername,null);
+                AppDate messDate = new AppDate() ;
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(),
+                        mUsername,
+                        null,
+                        mFirebaseUser.getUid(),
+                        messDate.getDate(),
+                        messDate.getTime());
                 mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
                 // Clear input box
@@ -228,7 +235,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                                 // Set the download URL to the message box, so that the user can send it to the database
-                                FriendlyMessage friendlyMessage = new FriendlyMessage(null, mUsername, downloadUrl.toString());
+                                AppDate messDate = new AppDate() ;
+                                FriendlyMessage friendlyMessage = new FriendlyMessage(null,
+                                        mUsername,
+                                        downloadUrl.toString(),
+                                        mFirebaseUser.getUid(),
+                                        messDate.getDate(),
+                                        messDate.getTime());
                                 mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
                             }
