@@ -123,57 +123,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize message ListView and its adapter
         final List<FriendlyMessage> friendlyMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
-        mMessageListView.setAdapter(mMessageAdapter);
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        // ImagePickerButton shows an image picker to upload a image for a message
-        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-            }
-        });
 
         // Enable Send button when there's text to send
-        mMessageEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    mSendButton.setEnabled(true);
-                } else {
-                    mSendButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-        mMessageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(DEFAULT_MSG_LENGTH_LIMIT)});
-
-        // Send button sends a message and clears the EditText
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Send messages on click
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(),mUsername,null);
-                mMessagesDatabaseReference.push().setValue(friendlyMessage);
-
-                // Clear input box
-                mMessageEditText.setText("");
-            }
-        });
-
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -201,47 +156,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode == RC_SIGN_IN){
-            if(resultCode == RESULT_OK){
-                Toast.makeText(this,"Signed In",Toast.LENGTH_SHORT).show();
-            } else if(resultCode ==RESULT_CANCELED){
-                Toast.makeText(this,"Signed In Canceled",Toast.LENGTH_SHORT).show();
-                finish();
-
-            }
-            else if(resultCode == RC_PHOTO_PICKER && resultCode == RESULT_OK){
-                Uri selectedImageUri = data.getData();
-
-                // Get a reference to store file at chat_photos/<FILENAME>
-                StorageReference photoRef = mStorageReference.child(selectedImageUri.getLastPathSegment());
-
-                // Upload file to Firebase Storage
-                photoRef.putFile(selectedImageUri)
-                        .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // When the image has successfully uploaded, we get its download URL
-                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-
-                                // Set the download URL to the message box, so that the user can send it to the database
-                                FriendlyMessage friendlyMessage = new FriendlyMessage(null, mUsername, downloadUrl.toString());
-                                mMessagesDatabaseReference.push().setValue(friendlyMessage);
-
-                            }
-
-                        });
-
-
-
-
-
-            }
-        }
-
     }
 
     @Override
@@ -271,13 +185,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        if (mAuthStateListener!= null){
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-
-        }
-        detachDatabaseListener();
-        mMessageAdapter.clear();
-
     }
     @Override
     protected  void onResume(){
@@ -286,55 +193,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void onSignedInInitialize(String username){
         mUsername = username;
-        attachDatabaseListener();
-
     }
     private void onSignedOutCleanup(){
         mUsername = ANONYMOUS;
         mMessageAdapter.clear();
-
-    }
-    private void attachDatabaseListener(){
-        if(mChildEventListener == null){
-            mChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    FriendlyMessage friendlyMessage =dataSnapshot.getValue(FriendlyMessage.class);
-                    mMessageAdapter.add(friendlyMessage);
-
-
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };
-            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
-        }
-
-    }
-    private void detachDatabaseListener(){
-        if (mChildEventListener != null){
-            mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-            mChildEventListener = null;
-
-        }
 
     }
 }

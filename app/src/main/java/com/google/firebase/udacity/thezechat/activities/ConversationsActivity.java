@@ -132,10 +132,7 @@ public void wentTo(View v)
         message.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         message.setText("ALLO");
 
-        if(mConversations.isEmpty()){
-            for(Conversation conversation : mConversations)
-                Database.getInstance().updateConversation(conversation.getCid(), users, message);
-        }
+
 
     }
 

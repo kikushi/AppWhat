@@ -143,7 +143,13 @@ public class MessagesActivity extends AppCompatActivity {
                         messDate.getDate(),
                         messDate.getTime()
                 );
-                dbUserConversation.child(Database.MESSAGES).push().setValue(friendlyMessage);
+                Database.getInstance().updateConversation(
+                        mConversation.getCid(),
+                        mFirebaseUser,
+                        mConversation.getUsers(),
+                        friendlyMessage
+                );
+                //dbUserConversation.child(Database.MESSAGES).push().setValue(friendlyMessage);
 
                 // Clear input box
                 mMessageEditText.setText("");

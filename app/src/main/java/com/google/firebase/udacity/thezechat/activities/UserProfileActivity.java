@@ -112,9 +112,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
+            Log.d(TAG, "Bundle null");
             isUserAuth  = true;
             attachDatabaseListener();
         } else {
+            Log.d(TAG, "Bundle is not null");
             isUserAuth = false;
             mUser = bundle.getParcelable(ConversationAdapter.USER);
 
@@ -279,30 +281,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         Database.getInstance().initUserDatabase();
                     else
                         updateUI(mUser);
-
-                    /*if (mUser != null) {
-
-                        Database.getInstance().updateUserDatabase(mUser);
-
-                        Database.getInstance().updateUserSubscriptions(mUser.getUid(), "1");
-                        Database.getInstance().updateUserSubscriptions(mUser.getUid(), "2");
-                        Database.getInstance().updateUserSubscriptions(mUser.getUid(), "3");
-
-                        if (mUser.getCurrentImageProfile() != null) {
-                            profileImage = Database.getInstance()
-                                    .getUserImages(mUser.getUid())
-                                    .child(mUser.getCurrentImageProfile());
-
-                            GlideApp.with(UserProfileActivity.this)
-                                    .load(profileImage)
-                                    .placeholder(R.drawable.image_user_default)
-                                    .error(R.drawable.image_user_default)
-                                    .into(mProfileImageView);
-                        } else {
-                            Log.e(TAG, "current image == null");
-                        }
-
-                    }*/
+                    
                 }
 
                 @Override
