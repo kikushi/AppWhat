@@ -52,8 +52,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
-import com.google.firebase.udacity.thezechat.models.Conversation;
-import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
 import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 

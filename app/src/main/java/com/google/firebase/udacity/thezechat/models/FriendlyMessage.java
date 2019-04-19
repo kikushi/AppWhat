@@ -24,14 +24,20 @@ public class FriendlyMessage implements Parcelable {
     private String name;
     private String photoUrl;
     private String nameD;
+    private String userID ;
+    private String date ;
+    private String time ;
 
     public FriendlyMessage() {
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl) {
+    public FriendlyMessage(String text, String name, String photoUrl, String uid, String d, String t) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
+        this.userID = uid ;
+        this.date = d ;
+        this.time = t ;
     }
 
     public String getText() {
@@ -58,11 +64,26 @@ public class FriendlyMessage implements Parcelable {
         this.photoUrl = photoUrl;
     }
 
+    public String getUserID() { return this.userID; }
+
+    public void setUserID(String uid) { this.userID = uid ; }
+
+    public String getDate() { return date ; }
+
+    public void setDate(String newDate){ this.date = newDate ; }
+
+    public String getTime() { return time ; }
+
+    public void setTime(String newTime) { this.time = newTime ; }
+
 
     protected FriendlyMessage(Parcel in) {
         text = in.readString();
         name = in.readString();
         photoUrl = in.readString();
+        userID = in.readString();
+        date = in.readString();
+        time = in.readString() ;
     }
 
     public static final Creator<FriendlyMessage> CREATOR = new Creator<FriendlyMessage>() {
@@ -87,5 +108,8 @@ public class FriendlyMessage implements Parcelable {
         parcel.writeString(text);
         parcel.writeString(name);
         parcel.writeString(photoUrl);
+        parcel.writeString(userID);
+        parcel.writeString(date);
+        parcel.writeString(time);
     }
 }

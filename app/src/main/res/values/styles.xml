@@ -16,4 +16,56 @@
         <item name="android:textColor">@color/colorTitle</item>
 
     </style>
+
+    <style name="message_layout_default" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
+    <style name="message_layout_sent" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_gravity">right</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/colorAppWhatGreen</item>
+    </style>
+
+    <style name="message_layout_received" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/colorAppWhatGrey</item>
+    </style>
+
+    <style name="message_contenu" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:text"></item>
+    </style>
+
+    <style name="message_temps" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorGrey</item>
+        <item name="android:text"></item>
+    </style>
+
+    <style name="match_parent" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 </resources>

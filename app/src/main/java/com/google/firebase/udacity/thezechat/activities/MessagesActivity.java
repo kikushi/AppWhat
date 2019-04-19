@@ -8,6 +8,9 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.udacity.thezechat.R;
 import com.google.firebase.udacity.thezechat.adapters.ConversationAdapter;
 import com.google.firebase.udacity.thezechat.adapters.MessageAdapter;
+import com.google.firebase.udacity.thezechat.models.AppDate;
 import com.google.firebase.udacity.thezechat.models.Conversation;
 import com.google.firebase.udacity.thezechat.models.Database;
 import com.google.firebase.udacity.thezechat.models.FriendlyMessage;
@@ -58,7 +62,7 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle in = getIntent().getExtras();
         if (in != null) {
@@ -81,7 +85,8 @@ public class MessagesActivity extends AppCompatActivity {
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, mMessages);
+        //mMessageAdapter = new MessageAdapter(this, R.layout.item_message, mMessages);
+        mMessageAdapter = new MessageAdapter(this, R.layout.message_view, mMessages, mFirebaseAuth.getCurrentUser());
         mMessageListView.setAdapter(mMessageAdapter);
     }
 
@@ -106,6 +111,22 @@ public class MessagesActivity extends AppCompatActivity {
         detachDatabaseListener();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void updateUI() {
 
         attachDatabaseListener();
@@ -113,12 +134,16 @@ public class MessagesActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AppDate messDate = new AppDate() ;
                 FriendlyMessage friendlyMessage = new FriendlyMessage(
                         mMessageEditText.getText().toString(),
                         mFirebaseAuth.getCurrentUser().getDisplayName(),
-                        null
+                        null,
+                        mFirebaseAuth.getCurrentUser().getUid(),
+                        messDate.getDate(),
+                        messDate.getTime()
                 );
-                Database.getInstance().updateConversation(mConversation.getCid(), mConversation.getUsers(), friendlyMessage);
+                dbUserConversation.child(Database.MESSAGES).push().setValue(friendlyMessage);
 
                 // Clear input box
                 mMessageEditText.setText("");

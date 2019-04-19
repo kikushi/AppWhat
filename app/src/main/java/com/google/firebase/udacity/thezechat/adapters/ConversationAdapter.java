@@ -128,10 +128,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (conversation.getMessages() == null)
             throw new NullPointerException("No message in conversation " + holder.getAdapterPosition());
-        if (conversation.getMessages().size() != 0)
-            holder.dernierTexte.setText(conversation.getMessages().get(0).getText());
-        else
+        if (conversation.getMessages().size() != 0) {
+            int last = conversation.getMessages().size() - 1 ;
+            holder.dernierTexte.setText(conversation.getMessages().get(last).getText());
+            holder.dateContact.setText(conversation.getMessages().get(last).getDate());
+        }
+        else {
             holder.dernierTexte.setText("(Vide)");
+            holder.dateContact.setText(R.string.last_contact_time);
+        }
 
     }
 
@@ -153,12 +158,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         holder.profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isGroupConversation = conversation.getUsers().size() > 2;
+                /*boolean isGroupConversation = conversation.getUsers().size() > 2;
                 if (!isGroupConversation) {
                     Bundle out = new Bundle();
                     out.putParcelable(USER, conversation.getUsers().get(0));
                     IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, out);
-                }
+                }*/
+                IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, null);
             }
         });
         //if (conversation.getUsers().size() <= 2)

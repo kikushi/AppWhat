@@ -129,7 +129,8 @@ public class ContactAdaptater extends RecyclerView.Adapter<ContactAdaptater.View
 
                // Log.e(TAG, "Size of messages is " + conversation.getCid());
                 //out.putParcelable(KEY, conversation);
-                IntentHandler.getInstance().openActivity(activity, MessagesActivity.class, null);
+                out.putParcelable(KEY, new Conversation());
+                IntentHandler.getInstance().openActivity(activity, MessagesActivity.class, out);
             }
         });
     }
