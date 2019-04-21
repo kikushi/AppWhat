@@ -2,7 +2,9 @@ package com.google.firebase.udacity.thezechat.adapters;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 
@@ -33,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 public class ContactAdaptater extends RecyclerView.Adapter<ContactAdaptater.ViewHolder> {
-   // private static final String TAG = ContactAdapter.class.getSimpleName();
+    private static final String TAG = ContactAdaptater.class.getSimpleName();
     public static final String KEY = "conversation";
     public static final String USER = "user";
 
@@ -117,21 +122,71 @@ public class ContactAdaptater extends RecyclerView.Adapter<ContactAdaptater.View
 
     private void setOnClickListener(final ContactAdaptater.ViewHolder holder) {
 
+        final User userSelected = contactAppWhatList.get(holder.getAdapterPosition());
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle out = new Bundle();
-                List<User> userList= new ArrayList<>();
-                userList.add(us);
-                userList.add(contactAppWhatList.get(holder.getAdapterPosition()));
-                Database.getInstance().createConversation(userList);
-
-               // Log.e(TAG, "Size of messages is " + conversation.getCid());
-                //out.putParcelable(KEY, conversation);
-                out.putParcelable(KEY, new Conversation());
-                IntentHandler.getInstance().openActivity(activity, MessagesActivity.class, out);
+                doesConversationExist(userSelected);
             }
         });
     }
+
+    private void doesConversationExist(final User userSelected) {
+        Log.d(TAG, "click " + userSelected.getName());
+        final List<User> userList= new ArrayList<>();
+
+        userList.add(userSelected);
+
+        Database.getInstance().getUserConversations(us.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, dataSnapshot.toString());
+
+                boolean conversationExist = false;
+                String cid = "";
+
+                for (DataSnapshot conversationSnapshot : dataSnapshot.getChildren()) {
+
+                    List<User> usersInConversation = new ArrayList<>();
+                    for (DataSnapshot userSnapshot : conversationSnapshot.child(Database.USERS).getChildren()) {
+
+                        User user = userSnapshot.getValue(User.class);
+
+                        if (user.getUid().equals(userSelected.getUid())) {
+
+                            conversationExist = true;
+
+                            cid = conversationSnapshot.getKey();
+
+                        } else {
+                            Log.e(TAG, "null");
+                        }
+
+
+                    }
+
+                }
+                if (!conversationExist) {
+                    Database.getInstance().createConversation(activity, us, userList);
+                } else { Log.d(TAG, "click " + userSelected.getName() + " " + conversationExist);
+                    Conversation conversation = new Conversation();
+                    conversation.setCid(cid);
+
+                    Bundle out = new Bundle();
+                    out.putParcelable(KEY, conversation);
+                    IntentHandler.getInstance().openActivity(activity, MessagesActivity.class, out);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
 }

@@ -1,7 +1,9 @@
 package com.google.firebase.udacity.thezechat.models;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -23,6 +25,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.firebase.udacity.thezechat.activities.MessagesActivity;
+import com.google.firebase.udacity.thezechat.adapters.ContactAdaptater;
+import com.google.firebase.udacity.thezechat.utils.IntentHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -174,12 +179,55 @@ public class Database  {
         getUserSubscriptions(sid).child(SUBSCRIBERS).child(uid).setValue(true);
     }
 
-    public void createConversation(List<User> users)
-    {
+    public void createConversation(Activity activity, User userAuth, List<User> users) {
         String id = rootDatabase.push().getKey();
+
+        // Create conversation for user auth
+        getUserConversations(userAuth.getUid()).child(id).child("cid").setValue(id);
+        getUserConversations(userAuth.getUid()).child(id).child("users").setValue(users);
+
+        //  Create converation for other user
+
         for (User user : users) {
+            //  Create a temp list because the list of user
+            //  We need to update properly the user in conversation for user auth
+            List<User> temp = new ArrayList<>(users);
+            temp.remove(user);
+            temp.add(userAuth);
+
             getUserConversations(user.getUid()).child(id).child("cid").setValue(id);
-            getUserConversations(user.getUid()).child(id).child("users").setValue(users);
+            getUserConversations(user.getUid()).child(id).child("users").setValue(temp);
+        }
+
+        Conversation conversation = new Conversation();
+        conversation.setCid(id);
+        conversation.setUsers(users);
+        conversation.setMessages(new ArrayList<FriendlyMessage>());
+
+        Bundle out = new Bundle();
+        out.putParcelable(ContactAdaptater.KEY, conversation);
+        IntentHandler.getInstance().openActivity(activity, MessagesActivity.class, out);
+
+    }
+
+    public void updateConversation(String cid, FirebaseUser userAuth, List<User> users, FriendlyMessage message) {
+
+        //  Update conversation for user auth
+        getUserConversations(userAuth.getUid()).child(cid).child(MESSAGES).push().setValue(message);
+
+        //  Update conversation for all other user
+        for (User user : users) {
+            getUserConversations(user.getUid()).child(cid).child(MESSAGES).push().setValue(message);
+        }
+
+    }
+
+    public void deleteConversation(FirebaseUser userAuth, Conversation conversation) {
+        //  Delete conversation from user auth
+        getUserConversation(userAuth.getUid(), conversation.getCid()).removeValue();
+        //  Delete conversation from other user
+        for (User user : conversation.getUsers()) {
+            getUserConversation(user.getUid(), conversation.getCid()).removeValue();
         }
     }
 

@@ -1,7 +1,9 @@
 package com.google.firebase.udacity.thezechat.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.udacity.thezechat.R;
 
@@ -155,22 +159,46 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             }
         });
 
+        holder.mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                deleteConversation(firebaseUser, conversation);
+                return true;
+            }
+        });
+
         holder.profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*boolean isGroupConversation = conversation.getUsers().size() > 2;
-                if (!isGroupConversation) {
-                    Bundle out = new Bundle();
-                    out.putParcelable(USER, conversation.getUsers().get(0));
-                    IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, out);
-                }*/
-                IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, null);
+                Bundle out = new Bundle();
+                out.putParcelable(USER, conversation.getUsers().get(0));
+                IntentHandler.getInstance().openActivity(activity, UserProfileActivity.class, out);
             }
         });
         //if (conversation.getUsers().size() <= 2)
         //    holder.profileImage.setUsersDialog(activity, conversation.getUsers().get(0).getName());
 
 
+    }
+
+    private void deleteConversation(final FirebaseUser firebaseUser, final Conversation conversation) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Supprimer")
+                .setMessage("Voulez-vous supprimer la conversation?")
+                .setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Database.getInstance().deleteConversation(firebaseUser, conversation);
+                    }
+                })
+                .setNeutralButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create().show();
     }
 
 }
